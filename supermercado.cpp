@@ -1,18 +1,18 @@
-#include<fstream>
-#include<string.h>
+#include <fstream>
+#include <string.h>
 #include <cstdio>
 #include <stdlib.h>
-#include<iomanip>
-#include<iostream>
+#include <iomanip>
+#include <iostream>
 
 using namespace std;
 
 class produto {
 
-	int produto_id;
+	int produto_id;wew
 	char produto_nome[50];
 	float produto_preco;
-	int produto_quantidade, tax, product_discount;
+	int produto_quantidade, desconto_produto;
 
     public:
 
@@ -23,12 +23,12 @@ class produto {
 		cout<<endl<<"Coloque o nome do produto: ";
 		cin.ignore();
 		cin.getline(produto_nome,50);
-		cout<<endl<<"COloque o preço do produto: ";
+		cout<<endl<<"Coloque o preço do produto: ";
 		cin>>produto_preco;
 		cout<<endl<<"Coloque a quantidade do produto no estoque: ";
 		cin>>produto_quantidade;
-		cout<<endl<<"Please Enter The Discount (%): ";
-		cin>>product_discount;
+		cout<<endl<<"Coloque o desconto do produto (%): ";
+		cin>>desconto_produto;
 	}
     void mostrar_produto()
 	{
@@ -56,9 +56,9 @@ int getProduto()
 	{
 		return produto_quantidade;
 	}
-	float getDiscount()
+	float getDesconto()
 	{
-		return product_discount;
+		return desconto_produto;
 	}
 };
 
@@ -68,7 +68,7 @@ produto produt;
 
 void salvar_produto()
 {
-	sp.open("database.dat",ios::out|ios::app);
+	sp.open("prod.txt",ios::out|ios::app);
 	produt.inserir_produto();
 	sp.write((char*)&produt,sizeof(produto));
 	sp.close();
@@ -81,7 +81,7 @@ void salvar_produto()
 	cout<<endl<<"\t\t@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
 	cout<<endl<<"\t\tESTOQUE.";
 	cout<<endl<<"\t\t@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n";
-	sp.open("database.dat",ios::in);
+	sp.open("prod.txt",ios::in);
 	while(sp.read((char*)&produt,sizeof(produto)))
 	{
 		produt.mostrar_produto();
@@ -93,7 +93,7 @@ void salvar_produto()
 void exibir_produtos(int num)
 {
 	bool encontrar=false;
-	sp.open("database.dat",ios::in);
+	sp.open("prod.txt",ios::in);
 	while(sp.read((char*)&produt,sizeof(produto)))
 	{
 		if(produt.getProduto()==num)
@@ -117,7 +117,7 @@ void alterar_produto()
 	cout << endl << endl <<"\tColoque o produto: ";
 	cin>>num;
 
-	sp.open("database.dat",ios::in|ios::out);
+	sp.open("prod.txt",ios::in|ios::out);
 	while(sp.read((char*)&produt,sizeof(produto)) && encontrar==false)
 	{
 		if(produt.getProduto()==num)
@@ -143,7 +143,7 @@ void remover_produto()
 	system("clear");
 	cout << endl << endl << "Coloque o produto: ";
 	cin >> num;
-	sp.open("database.dat",ios::in|ios::out);
+	sp.open("prod.txt",ios::in|ios::out);
 	fstream sp2;
 	sp2.open("Temp.dat",ios::out);
 	sp.seekg(0,ios::beg);
@@ -156,8 +156,8 @@ void remover_produto()
 	}
 	sp2.close();
 	sp.close();
-	remove("database.dat");
-	rename("Temp.dat","database.dat");
+	remove("prod.txt");
+	rename("Temp.dat","prod.txt");
 	cout << endl << endl <<"\tProduto delatado...";
 	getchar();
 }
@@ -203,7 +203,7 @@ void carrinho_compra()
 	cout <<"\nID No.\t Nome do Produto \tPreço \tQuantidade em Estoque\n";
 	for(int x=0;x<=c;x++)
 	{
-		sp.open("database.dat",ios::in);
+		sp.open("prod.txt",ios::in);
 		sp.read((char*)&produt,sizeof(produto));
 		while(!sp.eof())
 		{
@@ -225,19 +225,19 @@ void carrinho_compra()
 void menu()
 {
 	system("clear");
-	char opcao;
+	int digite;
 	cout<<"\t#GERENTE DA LOJA#";
-	cout<<"\n\t1 PARA INSERIR O ESTOQUE DA LOJA";
-	cout<<"\n\t2 PARA VISUALIZAR NO ESTOQUE DA LOJA";
-	cout<<"\n\t3 PARA CONSULTAR O ESTOQUE DA LOJA";
-	cout<<"\n\t4 PARA EDITAR PRODUTO DO ESTOQUE";
-	cout <<"\n\t5 PARA REMOVER PRODUTO DO ESTOQUE";
-	cout <<"\n\t6 VOLTAR AO MENU PRINCIPAL";
+	cout<<"\n\tDIGITE 1 PARA INSERIR PRODUTO NO ESTOQUE DA LOJA";
+	cout<<"\n\tDIGITE 2 PARA VISUALIZAR NO ESTOQUE DA LOJA";
+	cout<<"\n\tDIGITE 3 PARA CONSULTAR O ESTOQUE DA LOJA";
+	cout<<"\n\tDIGITE 4 PARA EDITAR PRODUTO DO ESTOQUE";
+	cout<<"\n\tDIGITE 5 PARA REMOVER PRODUTO DO ESTOQUE";
+	cout<<"\n\tDIGITE 6 VOLTAR AO MENU PRINCIPAL";
 	cout<<"\n\t@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
 
-	cout <<"\n\n\tOpção: ";
-	cin >> opcao;
-	switch(opcao)
+	cout <<"\n\n\tDigite a opção: ";
+	cin >> digite;
+	switch(digite)
 	{
 		case 1: system("clear");
 				salvar_produto();
@@ -271,7 +271,6 @@ void menu()
 int main(int argc, char *argv[])
 {
 	system("clear");
-	system("color 05");
   	cout<<"\t\t\t\t*\t*";
   	cout<<"\t\t\t\t**\t**";
    	cout<<"\t\t\t\t***\t***";
@@ -321,3 +320,4 @@ int main(int argc, char *argv[])
 
 	}
 }
+
